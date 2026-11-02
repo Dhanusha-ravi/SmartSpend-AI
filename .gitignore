@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+*.db
+.DS_Store
+
+# Large generated exports
+data/exports/*.csv
+data/exports/*.json
+
+# Generated data files
+data/raw/*
+data/processed/*
+data/ground_truth/*
