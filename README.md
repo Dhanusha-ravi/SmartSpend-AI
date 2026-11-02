@@ -1,4 +1,4 @@
-\# SmartSpend-AI
+# SmartSpend-AI
 
 
 
@@ -6,7 +6,7 @@ An AI-powered personal finance analytics project that analyzes synthetic transac
 
 
 
-\## Project Overview
+## Project Overview
 
 
 
@@ -16,21 +16,21 @@ SmartSpend-AI simulates a personal finance management system using synthetic fin
 
 The project focuses on:
 
-\- Transaction categorization
+- Transaction categorization
 
-\- Recurring payment detection
+- Recurring payment detection
 
-\- Monthly budget analysis
+- Monthly budget analysis
 
-\- Spending insights and alerts
+- Spending insights and alerts
 
-\- Data validation and testing
+- Data validation and testing
 
-\- CSV and JSON data exports
+- CSV and JSON data exports
 
 
 
-\## Dataset
+## Dataset
 
 
 
@@ -52,7 +52,7 @@ The project focuses on:
 
 
 
-\*\*Dataset period:\*\* January 2025 – December 2025
+**Dataset period:** January 2025 – December 2025
 
 
 
@@ -64,91 +64,91 @@ All financial data is synthetic and does not represent real customers or bank ac
 
 
 
-\## Key Features
+## Key Features
 
 
 
-\### 1. Transaction Categorization
+### 1. Transaction Categorization
 
-\- Categorizes debit and credit transactions.
+- Categorizes debit and credit transactions.
 
-\- Uses merchant-based category rules.
+- Uses merchant-based category rules.
 
-\- Uses merchant category fallback when no rule matches.
+- Uses merchant category fallback when no rule matches.
 
-\- Evaluates predicted categories against synthetic ground truth.
-
-
-
-\### 2. Recurring Payment Detection
-
-\- Identifies potential monthly and yearly recurring payments.
-
-\- Compares transaction amounts and dates.
-
-\- Calculates match confidence scores.
-
-\- Assigns MATCHED, REVIEW, or REJECTED statuses.
+- Evaluates predicted categories against synthetic ground truth.
 
 
 
-\### 3. Budget Analysis
+### 2. Recurring Payment Detection
 
-\- Compares monthly spending against category budgets.
+- Identifies potential monthly and yearly recurring payments.
 
-\- Calculates remaining budget and utilization percentage.
+- Compares transaction amounts and dates.
 
-\- Identifies over-budget and near-limit categories.
+- Calculates match confidence scores.
 
-
-
-\### 4. Spending Insights
-
-\- Identifies the highest-spending category.
-
-\- Calculates total monthly spending.
-
-\- Generates category-wise spending summaries.
-
-\- Provides budget alerts.
+- Assigns MATCHED, REVIEW, or REJECTED statuses.
 
 
 
-\### 5. Data Validation
+### 3. Budget Analysis
 
-\- Checks duplicate transaction IDs.
+- Compares monthly spending against category budgets.
 
-\- Checks missing ground truth records.
+- Calculates remaining budget and utilization percentage.
 
-\- Validates amounts, dates, descriptions, and categories.
-
-\- Checks foreign key integrity.
+- Identifies over-budget and near-limit categories.
 
 
 
-\## Technology Stack
+### 4. Spending Insights
+
+- Identifies the highest-spending category.
+
+- Calculates total monthly spending.
+
+- Generates category-wise spending summaries.
+
+- Provides budget alerts.
 
 
 
-\- Python 3.13
+### 5. Data Validation
 
-\- SQLite
+- Checks duplicate transaction IDs.
 
-\- Pandas
+- Checks missing ground truth records.
 
-\- NumPy
+- Validates amounts, dates, descriptions, and categories.
 
-\- Matplotlib
-
-\- Seaborn
-
-\- Faker
-
-\- Pytest
+- Checks foreign key integrity.
 
 
 
-\## Project Structure
+## Technology Stack
+
+
+
+- Python 3.13
+
+- SQLite
+
+- Pandas
+
+- NumPy
+
+- Matplotlib
+
+- Seaborn
+
+- Faker
+
+- Pytest
+
+
+
+## Project Structure
 
 
 
@@ -164,7 +164,7 @@ SmartSpend-AI/
 
 │   ├── processed/
 
-│   ├── ground\_truth/
+│   ├── ground_truth/
 
 │   └── exports/
 
@@ -172,19 +172,19 @@ SmartSpend-AI/
 
 │   ├── schema.sql
 
-│   ├── seed\_data.sql
+│   ├── seed_data.sql
 
-│   └── create\_database.py
+│   └── create_database.py
 
 ├── docs/
 
-│   └── data\_dictionary.md
+│   └── data_dictionary.md
 
 ├── src/
 
 │   ├── generators/
 
-│   ├── business\_logic/
+│   ├── business_logic/
 
 │   ├── analytics/
 
@@ -202,7 +202,7 @@ SmartSpend-AI/
 
 
 
-\## Setup
+## Setup
 
 
 
@@ -256,7 +256,7 @@ pip install -r requirements.txt
 
 
 
-\## Running the Project
+## Running the Project
 
 
 
@@ -266,7 +266,7 @@ Run database creation:
 
 ```bash
 
-python -m database.create\_database
+python -m database.create_database
 
 ```
 
@@ -278,7 +278,7 @@ Run data validation:
 
 ```bash
 
-python -m src.validators.data\_validator
+python -m src.validators.data_validator
 
 ```
 
@@ -290,7 +290,7 @@ Run monthly budget analysis:
 
 ```bash
 
-python -m src.analytics.budget\_analyzer
+python -m src.analytics.budget_analyzer
 
 ```
 
@@ -302,7 +302,7 @@ Generate spending insights:
 
 ```bash
 
-python -m src.analytics.insights\_generator
+python -m src.analytics.insights_generator
 
 ```
 
@@ -314,7 +314,7 @@ Export project data:
 
 ```bash
 
-python -m src.analytics.export\_data
+python -m src.analytics.export_data
 
 ```
 
@@ -332,73 +332,73 @@ python -m pytest -v
 
 
 
-\## Test Results
+## Test Results
 
 
 
-The project currently includes \*\*34 automated tests\*\* covering:
+The project currently includes **34 automated tests** covering:
 
 
 
-\- Transaction classification
+- Transaction classification
 
-\- Recurring payment detection
+- Recurring payment detection
 
-\- Budget analysis
+- Budget analysis
 
-\- Spending insights
+- Spending insights
 
-\- Data validation
-
-
-
-Latest test result: \*\*34 passed\*\*.
+- Data validation
 
 
 
-\## Important Assumptions and Limitations
+Latest test result: **34 passed**.
 
 
 
-\- The dataset is entirely synthetic.
-
-\- The transaction classifier uses merchant rules and merchant category fallback.
-
-\- The reported 100% classification accuracy is measured against synthetic ground truth that shares merchant-category information with the classifier. It is not an independent real-world accuracy measurement.
-
-\- Recurring payment detection is tested with controlled monthly transactions.
-
-\- A single year of data is insufficient to confirm most yearly recurring patterns.
-
-\- The project is a prototype and is not connected to real banking systems.
+## Important Assumptions and Limitations
 
 
 
-\## Future Improvements
+- The dataset is entirely synthetic.
+
+- The transaction classifier uses merchant rules and merchant category fallback.
+
+- The reported 100% classification accuracy is measured against synthetic ground truth that shares merchant-category information with the classifier. It is not an independent real-world accuracy measurement.
+
+- Recurring payment detection is tested with controlled monthly transactions.
+
+- A single year of data is insufficient to confirm most yearly recurring patterns.
+
+- The project is a prototype and is not connected to real banking systems.
 
 
 
-\- Improve classification using machine learning models.
-
-\- Evaluate classification on an independent holdout dataset.
-
-\- Improve recurring payment detection for missed or irregular payments.
-
-\- Build an interactive spending dashboard.
-
-\- Add more realistic transaction patterns and edge cases.
+## Future Improvements
 
 
 
-\## Author
+- Improve classification using machine learning models.
+
+- Evaluate classification on an independent holdout dataset.
+
+- Improve recurring payment detection for missed or irregular payments.
+
+- Build an interactive spending dashboard.
+
+- Add more realistic transaction patterns and edge cases.
 
 
 
-\*\*Dhanusha Ravikumar\*\*
+## Author
 
 
 
-GitHub: \[Dhanusha-ravi](https://github.com/Dhanusha-ravi)
+**Dhanusha Ravikumar**
+
+
+
+GitHub: [Dhanusha-ravi](https://github.com/Dhanusha-ravi)
 
 
 
