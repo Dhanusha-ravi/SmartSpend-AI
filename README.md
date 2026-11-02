@@ -206,17 +206,14 @@ SmartSpend-AI/
 
 
 
+## Setup
+
 Clone the repository:
 
-
-
 ```bash
-
 git clone https://github.com/Dhanusha-ravi/SmartSpend-AI.git
-
 cd SmartSpend-AI
 
-```
 
 
 
