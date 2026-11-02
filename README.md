@@ -143,10 +143,6 @@ All financial data is synthetic and does not represent real customers or bank ac
 
 ## Project Structure
 
-
-
-## Project Structure
-
 ```text
 SmartSpend-AI/
 ├── config/
@@ -172,11 +168,6 @@ SmartSpend-AI/
 └── README.md
 ```
 
-
-## Setup
-
-
-Clone the repository:
 
 ## Setup
 
