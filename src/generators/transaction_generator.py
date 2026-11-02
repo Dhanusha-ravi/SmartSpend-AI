@@ -1,9 +1,10 @@
+
 import random
 import sqlite3
 from datetime import datetime, timedelta
 from faker import Faker
 
-from config.settings import DATABASE_PATH, RANDOM_SEED, NUM_TRANSACTIONS
+from config.test_settings import DATABASE_PATH, RANDOM_SEED, NUM_TRANSACTIONS
 
 random.seed(RANDOM_SEED)
 fake = Faker("en_IN")
@@ -12,46 +13,111 @@ Faker.seed(RANDOM_SEED)
 START_DATE = datetime(2025, 1, 1)
 BATCH_SIZE = 5000
 
+SALARY_MIN = 30000
+SALARY_MAX = 80000
+
 
 def generate_transactions():
     connection = sqlite3.connect(DATABASE_PATH)
-    connection.execute("PRAGMA foreign_keys = ON")
 
-    accounts = [
-        row[0] for row in connection.execute(
-            "SELECT account_id FROM account"
-        )
-    ]
+    try:
+        connection.execute("PRAGMA foreign_keys = ON")
 
-    merchants = connection.execute("""
-        SELECT merchant_id, merchant_name, primary_category_code
-        FROM merchant
-    """).fetchall()
+        accounts = [
+            row[0] for row in connection.execute(
+                "SELECT account_id FROM account ORDER BY account_id"
+            )
+        ]
 
-    transactions = []
-    ground_truth = []
+        if not accounts:
+            raise ValueError("No accounts found. Generate users first.")
 
-    for i in range(1, NUM_TRANSACTIONS + 1):
+        merchants = connection.execute("""
+            SELECT merchant_id, merchant_name, primary_category_code
+            FROM merchant
+        """).fetchall()
 
-        transaction_id = f"T{i:07d}"
-        account_id = random.choice(accounts)
+        if not merchants:
+            raise ValueError("No merchants found. Seed merchant data first.")
 
-        transaction_date = START_DATE + timedelta(
-            days=random.randint(0, 364)
-        )
+        transactions = []
+        ground_truth = []
 
-        if random.random() < 0.05:
-            merchant_id = None
-            category_code = "INCOME"
-            description = random.choice([
-                "SALARY CREDIT",
-                "MONTHLY SALARY",
-                "INTEREST CREDIT"
-            ])
-            transaction_type = "CREDIT"
-            amount = round(random.uniform(10000, 80000), 2)
+        def save_batch():
+            if not transactions:
+                return
 
-        else:
+            connection.executemany("""
+                INSERT INTO transactions (
+                    transaction_id, account_id, merchant_id,
+                    category_code, transaction_date, description,
+                    amount, transaction_type, payment_method,
+                    currency, status, created_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, transactions)
+
+            connection.executemany("""
+                INSERT INTO transaction_category_ground_truth (
+                    ground_truth_id, transaction_id,
+                    actual_category_code, verified_by, verified_at
+                )
+                VALUES (?, ?, ?, ?, ?)
+            """, ground_truth)
+
+            connection.commit()
+            transactions.clear()
+            ground_truth.clear()
+
+        # Generate monthly salary credits for every account.
+        salary_count = 0
+
+        for account_id in accounts:
+            for month in range(1, 13):
+                salary_date = datetime(2025, month, 1) + timedelta(days=4)
+                transaction_id = f"SAL-{account_id}-{month:02d}"
+                created_at = salary_date.isoformat()
+                amount = round(
+                    random.uniform(SALARY_MIN, SALARY_MAX), 2
+                )
+
+                transactions.append((
+                    transaction_id,
+                    account_id,
+                    None,
+                    None,
+                    salary_date.date().isoformat(),
+                    "MONTHLY SALARY CREDIT",
+                    amount,
+                    "CREDIT",
+                    "BANK_TRANSFER",
+                    "INR",
+                    "COMPLETED",
+                    created_at
+                ))
+
+                ground_truth.append((
+                    f"GT-{transaction_id}",
+                    transaction_id,
+                    "INCOME",
+                    "SYNTHETIC_GENERATOR",
+                    created_at
+                ))
+
+                salary_count += 1
+
+                if len(transactions) >= BATCH_SIZE:
+                    save_batch()
+
+        # Generate regular transactions.
+        for i in range(1, NUM_TRANSACTIONS + 1):
+            transaction_id = f"T{i:07d}"
+            account_id = random.choice(accounts)
+
+            transaction_date = START_DATE + timedelta(
+                days=random.randint(0, 364)
+            )
+
             merchant_id, merchant_name, category_code = random.choice(
                 merchants
             )
@@ -63,76 +129,63 @@ def generate_transactions():
                 f"POS PURCHASE {merchant_name}"
             ])
 
-            transaction_type = "DEBIT"
-            amount = round(random.uniform(50, 10000), 2)
+            amount = round(random.uniform(50, 2500), 2)
 
-        status = random.choices(
-            ["COMPLETED", "PENDING", "FAILED", "REVERSED"],
-            weights=[94, 3, 2, 1]
-        )[0]
+            status = random.choices(
+                ["COMPLETED", "PENDING", "FAILED", "REVERSED"],
+                weights=[94, 3, 2, 1]
+            )[0]
 
-        payment_method = random.choice([
-            "UPI", "CARD", "NET_BANKING", "CASH"
-        ])
+            payment_method = random.choice([
+                "UPI", "CARD", "NET_BANKING", "CASH"
+            ])
 
-        created_at = transaction_date.isoformat()
+            created_at = transaction_date.isoformat()
 
-        transactions.append((
-            transaction_id,
-            account_id,
-            merchant_id,
-            None,
-            transaction_date.date().isoformat(),
-            description,
-            amount,
-            transaction_type,
-            payment_method,
-            "INR",
-            status,
-            created_at
-        ))
+            transactions.append((
+                transaction_id,
+                account_id,
+                merchant_id,
+                None,
+                transaction_date.date().isoformat(),
+                description,
+                amount,
+                "DEBIT",
+                payment_method,
+                "INR",
+                status,
+                created_at
+            ))
 
-        ground_truth.append((
-            f"GT{i:07d}",
-            transaction_id,
-            category_code,
-            "SYNTHETIC_GENERATOR",
-            created_at
-        ))
+            ground_truth.append((
+                f"GT{i:07d}",
+                transaction_id,
+                category_code,
+                "SYNTHETIC_GENERATOR",
+                created_at
+            ))
 
-        if len(transactions) >= BATCH_SIZE:
-            connection.executemany("""
-                INSERT INTO transactions VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, transactions)
-
-            connection.executemany("""
-                INSERT INTO transaction_category_ground_truth
-                VALUES (?, ?, ?, ?, ?)
-            """, ground_truth)
-
-            connection.commit()
-            transactions.clear()
-            ground_truth.clear()
+            if len(transactions) >= BATCH_SIZE:
+                save_batch()
 
             if i % 50000 == 0:
-                print(f"Generated {i:,} transactions")
+                print(f"Generated {i:,} regular transactions")
 
-    if transactions:
-        connection.executemany(
-            "INSERT INTO transactions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            transactions
+        save_batch()
+
+        print("\nTransaction generation completed!")
+        print(f"Regular transactions: {NUM_TRANSACTIONS:,}")
+        print(f"Monthly salary transactions: {salary_count:,}")
+        print(
+            f"Total generated: {NUM_TRANSACTIONS + salary_count:,}"
         )
 
-        connection.executemany(
-            "INSERT INTO transaction_category_ground_truth VALUES (?, ?, ?, ?, ?)",
-            ground_truth
-        )
+    except Exception:
+        connection.rollback()
+        raise
 
-        connection.commit()
-
-    connection.close()
-    print(f"Completed: {NUM_TRANSACTIONS:,} transactions generated!")
+    finally:
+        connection.close()
 
 
 if __name__ == "__main__":

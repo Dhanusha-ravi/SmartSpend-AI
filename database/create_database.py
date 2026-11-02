@@ -1,3 +1,4 @@
+
 import sqlite3
 from pathlib import Path
 
@@ -5,7 +6,8 @@ BASE_DIR = Path(__file__).resolve().parent
 
 schema_file = BASE_DIR / "schema.sql"
 seed_file = BASE_DIR / "seed_data.sql"
-database_file = BASE_DIR / "smartspend.db"
+anomaly_schema_file = BASE_DIR / "anomaly_schema.sql"
+database_file = BASE_DIR / "smartspend_test.db"
 
 connection = sqlite3.connect(database_file)
 
@@ -15,10 +17,13 @@ try:
     with open(schema_file, "r", encoding="utf-8") as file:
         connection.executescript(file.read())
 
+    with open(anomaly_schema_file, "r", encoding="utf-8") as file:
+        connection.executescript(file.read())
+
     with open(seed_file, "r", encoding="utf-8") as file:
         connection.executescript(file.read())
 
-    print("Database setup completed!")
+    print("TEST database setup completed!")
 
     tables = connection.execute("""
         SELECT name
@@ -38,11 +43,10 @@ try:
     """).fetchall()
 
     print("\nCategories inserted:", len(categories))
-    for category in categories:
-        print("-", category[0], ":", category[1])
 
 except sqlite3.Error as error:
     print("Database error:", error)
+    raise
 
 finally:
     connection.close()
