@@ -145,61 +145,38 @@ All financial data is synthetic and does not represent real customers or bank ac
 
 
 
+## Project Structure
+
 ```text
-
 SmartSpend-AI/
-
 ├── config/
-
 ├── data/
-
 │   ├── raw/
-
 │   ├── processed/
-
 │   ├── ground_truth/
-
 │   └── exports/
-
 ├── database/
-
 │   ├── schema.sql
-
 │   ├── seed_data.sql
-
 │   └── create_database.py
-
 ├── docs/
-
 │   └── data_dictionary.md
-
 ├── src/
-
 │   ├── generators/
-
 │   ├── business_logic/
-
 │   ├── analytics/
-
 │   └── validators/
-
 ├── tests/
-
 ├── requirements.txt
-
 ├── .gitignore
-
 └── README.md
-
 ```
 
 
-
 ## Setup
 
 
-
-## Setup
+Clone the repository:
 
 ## Setup
 
