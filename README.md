@@ -35,19 +35,12 @@ The project focuses on:
 
 
 | Metric | Count |
-
 |---|---:|
-
 | Synthetic users | 1,000 |
-
 | Accounts | 1,000 |
-
 | Transactions | 500,012 |
-
 | Ground truth records | 500,012 |
-
 | Monthly budget records | 9,000 |
-
 | Recurring payment matches | 11 |
 
 
@@ -208,194 +201,29 @@ SmartSpend-AI/
 
 ## Setup
 
+## Setup
+
 Clone the repository:
 
 ```bash
 git clone https://github.com/Dhanusha-ravi/SmartSpend-AI.git
 cd SmartSpend-AI
-
-
-
+```
 
 Create a virtual environment:
 
-
-
 ```bash
-
 python -m venv venv
-
 ```
-
-
 
 Activate it in Git Bash on Windows:
 
-
-
 ```bash
-
 source venv/Scripts/activate
-
 ```
-
-
 
 Install dependencies:
 
-
-
 ```bash
-
 pip install -r requirements.txt
-
 ```
-
-
-
-## Running the Project
-
-
-
-Run database creation:
-
-
-
-```bash
-
-python -m database.create_database
-
-```
-
-
-
-Run data validation:
-
-
-
-```bash
-
-python -m src.validators.data_validator
-
-```
-
-
-
-Run monthly budget analysis:
-
-
-
-```bash
-
-python -m src.analytics.budget_analyzer
-
-```
-
-
-
-Generate spending insights:
-
-
-
-```bash
-
-python -m src.analytics.insights_generator
-
-```
-
-
-
-Export project data:
-
-
-
-```bash
-
-python -m src.analytics.export_data
-
-```
-
-
-
-Run all tests:
-
-
-
-```bash
-
-python -m pytest -v
-
-```
-
-
-
-## Test Results
-
-
-
-The project currently includes **34 automated tests** covering:
-
-
-
-- Transaction classification
-
-- Recurring payment detection
-
-- Budget analysis
-
-- Spending insights
-
-- Data validation
-
-
-
-Latest test result: **34 passed**.
-
-
-
-## Important Assumptions and Limitations
-
-
-
-- The dataset is entirely synthetic.
-
-- The transaction classifier uses merchant rules and merchant category fallback.
-
-- The reported 100% classification accuracy is measured against synthetic ground truth that shares merchant-category information with the classifier. It is not an independent real-world accuracy measurement.
-
-- Recurring payment detection is tested with controlled monthly transactions.
-
-- A single year of data is insufficient to confirm most yearly recurring patterns.
-
-- The project is a prototype and is not connected to real banking systems.
-
-
-
-## Future Improvements
-
-
-
-- Improve classification using machine learning models.
-
-- Evaluate classification on an independent holdout dataset.
-
-- Improve recurring payment detection for missed or irregular payments.
-
-- Build an interactive spending dashboard.
-
-- Add more realistic transaction patterns and edge cases.
-
-
-
-## Author
-
-
-
-**Dhanusha Ravikumar**
-
-
-
-GitHub: [Dhanusha-ravi](https://github.com/Dhanusha-ravi)
-
-
-
